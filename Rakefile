@@ -42,12 +42,24 @@ end
 
 task :default => :test
 
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
+require 'rdoc/task'
+RDoc::Task.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "outliner #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+# PRIVATE GEM: Remove tasks for releasing this gem to Gemcutter
+tasks = Rake.application.instance_variable_get('@tasks')
+tasks.delete('release')
+tasks.delete('gemcutter:release')
+tasks.delete('console')
+
+desc 'Start a console with all necessary files required.'
+task :console do |t|
+  chdir File.dirname(__FILE__)
+  exec 'irb -I lib/ -I lib/outliner -r rubygems -r outliner'
 end
