@@ -6,6 +6,10 @@ module Outliner
       @html = Nokogiri::HTML RDiscount.new(markdown).to_html
     end 
 
+    def to_s
+      @html.to_s
+    end
+
     def outline
       @outlinee, @section, @stack = nil, nil, [] # 1, 2, 3
       walk @html.root, method(:enter), method(:exit) # 4
