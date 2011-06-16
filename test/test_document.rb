@@ -1,18 +1,9 @@
 require 'helper'
 
-MARKDOWN = <<MARKDOWN
-# A
-B
-## C
-D
-## E
-F
-MARKDOWN
-
 class DocumentTest < Test::Unit::TestCase
   context "From valid markdown" do
     setup do
-      @html = Outliner::Document.new(MARKDOWN).html
+      @html = Outliner::Document.new(markdown).html
     end
 
     should "be well formed html" do
@@ -32,3 +23,5 @@ class DocumentTest < Test::Unit::TestCase
     end
   end
 end
+
+

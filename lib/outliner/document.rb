@@ -1,14 +1,19 @@
 module Outliner
   class Document
+    MARKDOWN = <<MARKDOWN
+# A
+B
+## C
+D
+## E
+F
+MARKDOWN
+
     attr_reader :html, :outlinee, :section, :stack
 
-    def initialize(markdown)
+    def initialize(markdown=MARKDOWN)
       @html = Nokogiri::HTML RDiscount.new(markdown).to_html
     end 
-
-    def to_s
-      @html.to_s
-    end
 
     def outline
       @outlinee, @section, @stack = nil, nil, [] # 1, 2, 3
@@ -51,6 +56,7 @@ module Outliner
     def enter(outlinee)
       return if !@stack.empty? && heading?(@stack.last.node)
       if any_section? outlinee.node # 4c
+        puts "4c"
         @stack.push @outlinee unless @outlinee.nil? # 4c.2
         @outlinee = outlinee # 4c.3
         @section = Section.new # 4c.4, 4c.5
@@ -61,11 +67,15 @@ module Outliner
       return if @outlinee.nil?
       if heading? outlinee.node # 4h
         @section.heading = outlinee unless @section.heading? # 4h.1
+        puts "4h"
         if rank(outlinee.node) >= rank(@outlinee.outline.last_section.heading.node) # 4h.2
+          puts "4h.2"
+          puts @outlinee.node
           @section = Section.new 
           @section.heading = outlinee
           @outlinee.outline.append @section 
         else # 4h.3
+          puts "4h.3"
           candidate = @section # 4h.3.1
           abort = false
           while !abort

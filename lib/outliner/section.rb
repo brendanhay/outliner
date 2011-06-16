@@ -1,5 +1,7 @@
 module Outliner
   class Section
+    include Htmlerizer
+
     attr_accessor :heading, :outlinee
     
     def initialize
@@ -10,12 +12,16 @@ module Outliner
       !heading.nil?
     end
     
-    def append(section)
-      @sections.push section
+    def children?
+      @sections.any?
     end
-    
-    def sections
-      @sections
+
+    def last_child
+      @sections.last
+    end
+
+    def append(section)
+      @sections << section
     end
   end
 end
