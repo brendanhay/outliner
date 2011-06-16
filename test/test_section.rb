@@ -16,8 +16,8 @@ class SectionTest < Test::Unit::TestCase
 
     context "after appending multiple sections" do
       setup do
-        @appended = Outliner::Section.new
         5.times { @section.append Outliner::Section.new }
+        @appended = Outliner::Section.new
         @section.append @appended
       end
 
@@ -27,6 +27,17 @@ class SectionTest < Test::Unit::TestCase
 
       should "have the appended section as the last child" do
         assert_equal @appended, @section.last_child
+      end
+
+      context "the html output" do
+        should "contain one root ordered list" do
+          assert_equal 1, Nokogiri::HTML.parse(@section.to_html).css('body > ol').length
+        end
+
+        should "contain the same number of list items as child sections" do
+          puts Nokogiri::HTML.parse(@section.to_html).to_s
+          assert_equal @section.length, Nokogiri::HTML.parse(@section.to_html).css('body > ol > li').length
+        end
       end
     end
 

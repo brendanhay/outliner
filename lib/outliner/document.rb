@@ -25,7 +25,7 @@ MARKDOWN
       #    puts "Outlinee: #{@outlinee.inspect}\n\n"
       #    puts "Section: #{@section.inspect}\n\n"
       #    puts "Stack: #{@stack}\n\n"
-      @section
+      @outlinee.outline
     end
 
     private
@@ -70,7 +70,7 @@ MARKDOWN
         puts "4h"
         if rank(outlinee.node) >= rank(@outlinee.outline.last_section.heading.node) # 4h.2
           puts "4h.2"
-          puts @outlinee.node
+          puts @outlinee.node.name
           @section = Section.new 
           @section.heading = outlinee
           @outlinee.outline.append @section 
@@ -84,11 +84,10 @@ MARKDOWN
               @section.heading = outlinee
               candidate.append @section
               abort = true
-            else
-              # TODO: 4h.3.3
-              candidate = candidate.parent # 4h.3.4
-            end # 4h.3.5
-          end
+            end
+            # TODO: 4h.3.3
+            candidate = candidate.parent # 4h.3.4
+          end # 4h.3.5
         end
         @stack.push outlinee # 4h.4q
       end
@@ -101,12 +100,14 @@ MARKDOWN
       end
 
       if content_section?(outlinee.node) && !@stack.empty? # 4d
+        puts "4d"
         @outlinee = @stack.pop # 4d.1
         @section = @outlinee.outline.last_section # 4d.2
         outlinee.outline.sections.each { |s| @section.append s } # 4d.3
       end
 
       if root_section?(outlinee.node) && !@stack.empty? # 4e
+        puts "4e"
         @outlinee = @stack.pop # 4e.1
         @section = @outlinee.outline # 4e.2
         while section.children? # 4e.3

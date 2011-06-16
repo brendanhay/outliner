@@ -23,5 +23,9 @@ module Outliner
     def append(section)
       @sections << section
     end
+
+    def length
+      @sections.length
+    end
   end
 end
