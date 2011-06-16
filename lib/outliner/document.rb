@@ -1,6 +1,6 @@
 module Outliner
   class Document
-    attr_reader :outlinee, :section, :stack
+    attr_reader :html, :outlinee, :section, :stack
 
     def initialize(markdown)
       @html = Nokogiri::HTML RDiscount.new(markdown).to_html
@@ -12,7 +12,7 @@ module Outliner
 
     def outline
       @outlinee, @section, @stack = nil, nil, [] # 1, 2, 3
-      walk @html.root, method(:enter), method(:exit) # 4
+      walk @html.root # 4
       raise 'No sectioning content or root found in the DOM' if @outlinee.nil? # 5
       # TODO: 6
       # TODO: 7
@@ -25,15 +25,15 @@ module Outliner
 
     private
 
-    def walk(root, enter, exit)
+    def walk(root)
       node = root
       while node
-        enter.call Outlinee.new(node)
+        enter Outlinee.new(node)
         if node.first_element_child
           node = node.first_element_child
         else
           while node 
-            exit.call Outlinee.new(node)
+            exit Outlinee.new(node)
             if node.next_sibling
               node = node.next_sibling
             else
