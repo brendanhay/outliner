@@ -30,13 +30,17 @@ class SectionTest < Test::Unit::TestCase
       end
 
       context "the html output" do
+        setup do
+          @document = Nokogiri::HTML.parse(@section.to_html)
+        end
+
         should "contain one root ordered list" do
-          assert_equal 1, Nokogiri::HTML.parse(@section.to_html).css('body > ol').length
+          assert_equal 1, @document.css('body > ol').length
         end
 
         should "contain the same number of list items as child sections" do
           puts Nokogiri::HTML.parse(@section.to_html).to_s
-          assert_equal @section.length, Nokogiri::HTML.parse(@section.to_html).css('body > ol > li').length
+          assert_equal @section.length, @document.css('body > ol > li').length
         end
       end
     end

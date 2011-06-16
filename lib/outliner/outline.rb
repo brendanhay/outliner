@@ -1,12 +1,4 @@
 module Outliner
-  module Htmlerizer
-    def to_html
-      #title = (respond_to?(:heading) && !heading.nil?) ? "<a href='#'>#{heading.node.inner_text}</a>" : ''
-      content = @sections.map { |section| "<li>#{section.to_html}</li>" }.join ''
-      "<ol>#{content}</ol>"
-    end
-  end
-
   class Outline
     include Htmlerizer
 
