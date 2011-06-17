@@ -20,14 +20,12 @@ module Outliner
     
     def push(*sections)
       sections.each do |section| 
-        "Pushing section into outline"
         ensure_unique section
         @sections.push section 
       end
     end
 
     def append(section)
-      "Appending section to outline as last"
       ensure_unique section
       @sections.insert 0, section
     end

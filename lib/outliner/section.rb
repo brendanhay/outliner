@@ -1,6 +1,4 @@
 module Outliner
-  class SectionExistsError < RuntimeError; end
-
   class Section
     include Htmlerizer
 
@@ -28,7 +26,6 @@ module Outliner
     end
 
     def append(section)
-      puts "Appending section into parent section"
       raise SectionExistsError if @sections.include? section
       section.parent = self
       @sections << section

@@ -6,7 +6,4 @@ require 'outliner/document'
 require 'outliner/outline'
 require 'outliner/outlinee'
 require 'outliner/section'
-
-module Outliner
-
-end
+require 'outliner/section_exists_error'
