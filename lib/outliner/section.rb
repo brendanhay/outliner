@@ -50,10 +50,12 @@ module Outliner
       @sections.find_index(section) + 1
     end
 
-    def number
-      parent? ? "#{parent.number}.#{parent.find_depth(self)}" : '1'
+    def numberize
+      (parent? ? "#{parent.numberize}.#{parent.find_depth(self)}" : '1').tap do |n| 
+        heading.number = n
+      end
     end
-
+     
     def id
       heading.node['id'] || generate_id
     end
@@ -74,11 +76,10 @@ module Outliner
     end
 
     def generate_id
-      prefix, suffix = number.gsub('.', '-'), heading.node.text.strip
-      if suffix.empty?
-        prefix
-      else
-        "#{prefix}-#{suffix.gsub(/\s+/, '-').downcase}"
+      suffix = heading.node.text.strip.gsub(/\s+/, '-').downcase
+      prefix = numberize.gsub('.', '-')
+      "#{prefix}#{'-' unless suffix.empty?}#{suffix}".tap do |i|
+        heading.node['id'] = i
       end
     end
 

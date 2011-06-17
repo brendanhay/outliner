@@ -15,41 +15,34 @@ Y
 K
 MARKDOWN
 
-    attr_reader :html
+    attr_reader :table_of_contents, :formatted, :parsed
 
     def initialize(markdown=MARKDOWN)
-      @html = Nokogiri::HTML RDiscount.new(markdown).to_html
+      parsed = Nokogiri::HTML RDiscount.new(markdown).to_html
+      @table_of_contents, @formatted = outline parsed
+      @parsed = parsed.to_xhtml
     end 
 
     def to_s
-      @html.to_s
+      @parsed
     end
 
-    def table_of_contents
-      @toc ||= outline.to_html
-    end
+    private
 
-    def formatted
-      @formatted ||= []
-    end
-
-    def outline
-      unless @outline
-        @outlinee, @section, @stack = nil, nil, [] # 1, 2, 3
-        walk @html.root.dup # 4
-        raise 'No sectioning content or root found in the DOM' if @outlinee.nil? # 5
-        @outline = @outlinee.outline
-      end
-      @outline
-    end
     # TODO: 6
     # TODO: 7
     # TODO: outlinee.name.casecmp('body') == 0 # 8
     #    puts "Outlinee: #{@outlinee.inspect}\n\n"
     #    puts "Section: #{@section.inspect}\n\n"
     #    puts "Stack: #{@stack}\n\n"
-
-    private
+    def outline(html)
+      @outlinee, @section, @stack = nil, nil, [] # 1, 2, 3
+      modified = html.dup
+      walk modified.root # 4
+      raise 'No sectioning content or root found in the DOM' if @outlinee.nil? # 5
+      # TODO: Hacky .. calling .to_(x)html on outline is what actually modifies the document .. :S
+      [@outlinee.outline.to_xhtml, modified.to_xhtml]
+    end
 
     # This nasty piece of work is just to keep the control flow identical
     # to the algorithm mentioned at the bottom of the spec until I get some 

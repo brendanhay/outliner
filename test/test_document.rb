@@ -3,7 +3,7 @@ require 'helper'
 class DocumentTest < Test::Unit::TestCase
   context "From valid markdown" do
     setup do
-      @html = Outliner::Document.new(markdown).html
+      @html = Outliner::Document.new(markdown).parsed
     end
 
     should "be well formed html" do
@@ -20,12 +20,6 @@ class DocumentTest < Test::Unit::TestCase
 
     should "have three paragraphs" do
       assert_equal 3, @html.css('p').length
-    end
-
-    context "outline" do
-      should "not have duplicate sections" do
-        
-      end
     end
   end
 end

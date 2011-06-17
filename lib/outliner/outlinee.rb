@@ -1,14 +1,18 @@
 module Outliner
   class Outlinee
-    attr_accessor :outline, :section
+    attr_accessor :outline
     attr_reader :node
     
     def initialize(node)
       @node = node
     end
 
-    def id
-      
+    def number=(value)
+      if @number.nil?
+        @number = Nokogiri::XML::Node.new 'span', node.document
+        node.before @number
+      end
+      @number.content = value
     end
 
     def rank
