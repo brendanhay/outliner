@@ -63,11 +63,6 @@ module Outliner
       end
     end
 
-    def ensure_unique!(section)
-      raise SectionExistsError if @sections.include? section
-      section.parent = self
-    end
-
     def to_html
       "#{title_html}<ol>#{inner_html}</ol>"
     end
@@ -77,6 +72,11 @@ module Outliner
     end
 
     private
+
+    def ensure_unique!(section)
+      raise SectionExistsError if @sections.include? section
+      section.parent = self
+    end
 
     def title_html
       "<a href='##{id}'>#{heading.node.text}</a>" if heading?
