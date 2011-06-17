@@ -32,6 +32,11 @@ module Outliner
       @sections.first
     end
 
+    def each_section
+      raise ArgumentError unless block_given?
+      @sections.each { |s| yield s }
+    end
+
     def push(section)
       ensure_unique! section
       @sections.push section

@@ -3,7 +3,7 @@ require 'helper'
 class DocumentTest < Test::Unit::TestCase
   context "From valid markdown" do
     setup do
-      @html = Outliner::Document.new(markdown).parsed
+      @html = Nokogiri::HTML.parse Outliner::Document.new(markdown).parsed
     end
 
     should "be well formed html" do
