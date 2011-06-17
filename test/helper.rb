@@ -29,3 +29,11 @@ D
 F
 MARKDOWN
 end
+
+def new_node(tag)
+  Nokogiri::XML::Node.new tag, Nokogiri::XML::Document.new
+end
+
+def new_outlinee(tag)
+  Outliner::Outlinee.new new_node(tag)
+end
