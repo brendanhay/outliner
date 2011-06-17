@@ -5,7 +5,7 @@ module Outliner
 B
 ## C
 D
-## E
+## E 
 F
 ### G
 H

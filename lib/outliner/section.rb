@@ -55,12 +55,7 @@ module Outliner
     end
 
     def id
-      prefix, suffix = number.gsub('.', '-'), heading.node.text.strip
-      if suffix.empty?
-        prefix
-      else
-        "#{prefix}-#{suffix.gsub(/\s+/, '-').downcase}"
-      end
+      heading.node['id'] || generate_id
     end
 
     def to_html
@@ -76,6 +71,15 @@ module Outliner
     def ensure_unique!(section)
       raise SectionExistsError if @sections.include? section
       section.parent = self
+    end
+
+    def generate_id
+      prefix, suffix = number.gsub('.', '-'), heading.node.text.strip
+      if suffix.empty?
+        prefix
+      else
+        "#{prefix}-#{suffix.gsub(/\s+/, '-').downcase}"
+      end
     end
 
     def title_html
