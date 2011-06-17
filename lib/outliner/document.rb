@@ -7,6 +7,12 @@ B
 D
 ## E
 F
+### G
+H
+#### X
+Y
+## I
+K
 MARKDOWN
 
     attr_reader :html
@@ -19,18 +25,29 @@ MARKDOWN
       @html.to_s
     end
 
-    def outline
-      @outlinee, @section, @stack = nil, nil, [] # 1, 2, 3
-      walk @html.root # 4
-      raise 'No sectioning content or root found in the DOM' if @outlinee.nil? # 5
-      @outlinee.outline
+    def table_of_contents
+      @toc ||= outline.to_html
     end
-      # TODO: 6
-      # TODO: 7
-      # TODO: outlinee.name.casecmp('body') == 0 # 8
-      #    puts "Outlinee: #{@outlinee.inspect}\n\n"
-      #    puts "Section: #{@section.inspect}\n\n"
-      #    puts "Stack: #{@stack}\n\n"
+
+    def formatted
+      @formatted ||= []
+    end
+
+    def outline
+      unless @outline
+        @outlinee, @section, @stack = nil, nil, [] # 1, 2, 3
+        walk @html.root.dup # 4
+        raise 'No sectioning content or root found in the DOM' if @outlinee.nil? # 5
+        @outline = @outlinee.outline
+      end
+      @outline
+    end
+    # TODO: 6
+    # TODO: 7
+    # TODO: outlinee.name.casecmp('body') == 0 # 8
+    #    puts "Outlinee: #{@outlinee.inspect}\n\n"
+    #    puts "Section: #{@section.inspect}\n\n"
+    #    puts "Stack: #{@stack}\n\n"
 
     private
 
@@ -158,10 +175,6 @@ MARKDOWN
         @stack.pop if @stack.last == outlinee
         return
       end
-
-#       if outlinee.content_or_root? && !@section.heading?
-#         @section.heading = Nokogiri::XML::Node.new 'i', @html
-#       end
 
       # When exiting a sectioning content element, if the stack is not empty
       if outlinee.content? && @stack.any?

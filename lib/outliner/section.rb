@@ -1,19 +1,23 @@
 module Outliner
   class SectionExistsError < RuntimeError; end
   class Section
-    attr_accessor :heading, :outlinee, :parent
+    attr_reader :heading
+    attr_accessor :parent
     
     def initialize(section=nil)
       @sections = [section].compact
     end
 
-    def heading=(value)
-      puts value.node.name
-      @heading = value
+    def heading=(outlinee)
+      @heading = outlinee
     end
     
     def heading?
       !heading.nil?
+    end
+
+    def parent?
+      !parent.nil?
     end
 
     def children?
@@ -42,6 +46,23 @@ module Outliner
       @sections.length
     end
 
+    def find_depth(section)
+      @sections.find_index(section) + 1
+    end
+
+    def number
+      parent? ? "#{parent.number}.#{parent.find_depth(self)}" : '1'
+    end
+
+    def id
+      prefix, suffix = number.gsub('.', '-'), heading.node.text.strip
+      if suffix.empty?
+        prefix
+      else
+        "#{prefix}-#{suffix.gsub(/\s+/, '-').downcase}"
+      end
+    end
+
     def ensure_unique!(section)
       raise SectionExistsError if @sections.include? section
       section.parent = self
@@ -58,11 +79,13 @@ module Outliner
     private
 
     def title_html
-      "<a href='#'>#{heading.node.inner_text}</a>" if respond_to?(:heading) && !heading.nil?
+      "<a href='##{id}'>#{heading.node.text}</a>" if heading?
     end
 
     def inner_html
-      @sections.map { |section| "<li>#{section.to_html}</li>" }.join('') if @sections.any?
+      if @sections.any?
+        @sections.map { |s| "<li>#{s.to_html}</li>" }.join('') 
+      end
     end
   end
 end

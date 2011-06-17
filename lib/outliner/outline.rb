@@ -1,3 +1,5 @@
 module Outliner
-  class Outline < Section; end
+  class Outline < Section
+
+  end
 end

@@ -1,10 +1,14 @@
 module Outliner
   class Outlinee
-    attr_accessor :outline
+    attr_accessor :outline, :section
     attr_reader :node
     
     def initialize(node)
       @node = node
+    end
+
+    def id
+      
     end
 
     def rank
