@@ -126,7 +126,7 @@ MARKDOWN
               section = Section.new
 
               # And append it to candidate section (this does not change the last section in the outline)
-              candidate.append section
+              candidate.push section
 
               # Let current section be this new section
               @section = section

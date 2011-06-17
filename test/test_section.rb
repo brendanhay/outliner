@@ -25,8 +25,8 @@ class SectionTest < Test::Unit::TestCase
         assert @section.children?
       end
 
-      should 'have the appended section as the last child' do
-        assert_same @appended, @section.last_child
+      should 'have the last section the same as the appended section' do
+        assert_same @appended, @section.last_section
       end
 
       should 'raise if same section is re-added' do

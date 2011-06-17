@@ -17,7 +17,7 @@ class OutlineTest < Test::Unit::TestCase
 
     context "after pushing multiple sections" do
       setup do
-        @outline.push 5.times.map { Outliner::Section.new }
+        5.times { @outline.push Outliner::Section.new }
       end      
 
       should "not have the initial section in first position" do
