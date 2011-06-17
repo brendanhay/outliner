@@ -9,24 +9,28 @@ D
 F
 MARKDOWN
 
-    attr_reader :html, :outlinee, :section, :stack
+    attr_reader :html
 
     def initialize(markdown=MARKDOWN)
       @html = Nokogiri::HTML RDiscount.new(markdown).to_html
     end 
 
+    def to_s
+      @html.to_s
+    end
+
     def outline
       @outlinee, @section, @stack = nil, nil, [] # 1, 2, 3
       walk @html.root # 4
       raise 'No sectioning content or root found in the DOM' if @outlinee.nil? # 5
+      @outlinee.outline
+    end
       # TODO: 6
       # TODO: 7
       # TODO: outlinee.name.casecmp('body') == 0 # 8
       #    puts "Outlinee: #{@outlinee.inspect}\n\n"
       #    puts "Section: #{@section.inspect}\n\n"
       #    puts "Stack: #{@stack}\n\n"
-      @outlinee.outline
-    end
 
     private
 
@@ -196,7 +200,7 @@ MARKDOWN
       if outlinee.content_or_root?
         @section = @outlinee.outline.first_child
       end # Skip to the next step in the overall set of steps. (The walk is over.)
-    end
+    end   
   end
 end
 

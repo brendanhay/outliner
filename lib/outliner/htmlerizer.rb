@@ -1,8 +1,11 @@
 module Outliner
   module Htmlerizer
     def to_html
-      content = "#{title_html}#{inner_html}"
-      @sections.any? ? "<ol>#{content}</ol>" : content
+      "#{title_html}<ol>#{inner_html}</ol>"
+    end
+
+    def to_xhtml
+      Nokogiri::XML.parse(to_html).to_xhtml
     end
 
     private
