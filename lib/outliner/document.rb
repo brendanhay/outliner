@@ -168,7 +168,7 @@ MARKDOWN
         # Pop the top element from the stack, and let the current outlinee be that element
         @outlinee = @stack.pop
         # Let the current section be the last section in the outline of the current outlinee element
-        @section = @outlinee.last_section
+        @section = @outlinee.outline.last_section
         # Finding the deepest child: if current section has no children stop these steps
         while @section.children?
           @section = @section.last_child
