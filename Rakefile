@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "outliner"
   gem.homepage = "http://github.com/brendanhay/outliner"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = 'Ruby implementation of the HTML5 outline algorithm'
+  gem.description = 'A preliminary attempt at using the HTML5 outline algorithm from: http://dev.w3.org/html5/spec/sections.html#outline - to generate table of contents and automatic numbering for markdown documents.'
   gem.email = "brendan.g.hay@gmail.com"
   gem.authors = ["brendanhay"]
   # dependencies defined in Gemfile
