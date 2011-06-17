@@ -21,6 +21,12 @@ class DocumentTest < Test::Unit::TestCase
     should "have three paragraphs" do
       assert_equal 3, @html.css('p').length
     end
+
+    context "outline" do
+      should "not have duplicate sections" do
+        
+      end
+    end
   end
 end
 

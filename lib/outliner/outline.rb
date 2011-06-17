@@ -2,6 +2,8 @@ module Outliner
   class Outline
     include Htmlerizer
 
+    attr_reader :sections
+
     # Using a stack for sections since push is the most common operation
     # Insert only occurs when deliberately setting the last section (entering a heading node)
     def initialize(section)
@@ -17,11 +19,23 @@ module Outliner
     end
     
     def push(*sections)
-      sections.each { |section| @sections.push section }
+      sections.each do |section| 
+        "Pushing section into outline"
+        ensure_unique section
+        @sections.push section 
+      end
     end
 
     def append(section)
+      "Appending section to outline as last"
+      ensure_unique section
       @sections.insert 0, section
+    end
+
+    private 
+
+    def ensure_unique(section)
+      raise SectionExistsError if @sections.include? section
     end
   end
 end

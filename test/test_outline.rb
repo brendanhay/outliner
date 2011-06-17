@@ -8,11 +8,11 @@ class OutlineTest < Test::Unit::TestCase
     end
 
     should "have the initial section in first position" do
-      assert_equal @section, @outline.first_section
+      assert_same @section, @outline.first_section
     end
 
     should "have the intial section in last position" do
-      assert_equal @section, @outline.last_section
+      assert_same @section, @outline.last_section
     end
 
     context "after pushing multiple sections" do
@@ -21,21 +21,29 @@ class OutlineTest < Test::Unit::TestCase
       end      
 
       should "not have the initial section in first position" do
-        assert_not_equal @section, @outline.first_section
+        assert_not_same @section, @outline.first_section
       end
 
       should "still have the initial section in last position" do
-        assert_equal @section, @outline.last_section
+        assert_same @section, @outline.last_section
       end
 
-      context "and appending a section" do
+      should 'raise if same section is pushed again' do
+        assert_raise(Outliner::SectionExistsError) { @outline.push @outline.first_section }
+      end
+
+      context 'and appending a section' do
         setup do
           @appended = Outliner::Section.new
           @outline.append @appended
         end
         
-        should "have the newly append section in last position" do
-          assert_equal @appended, @outline.last_section
+        should 'have the newly appended section in last position' do
+          assert_same @appended, @outline.last_section
+        end
+
+        should 'raise if same section is appended' do
+          assert_raise(Outliner::SectionExistsError) { @outline.append @appended }
         end
       end
     end

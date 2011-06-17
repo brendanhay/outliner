@@ -8,7 +8,7 @@ class OutlineeTest < Test::Unit::TestCase
     end
     
     should "have a reference to the initalising node" do
-      assert_equal @node, @outlinee.node
+      assert_same @node, @outlinee.node
     end
 
     context "after setting the outline" do
@@ -18,7 +18,7 @@ class OutlineeTest < Test::Unit::TestCase
       end
 
       should "have the same outline" do
-        assert_equal @outline, @outlinee.outline
+        assert_same @outline, @outlinee.outline
       end
     end
   end

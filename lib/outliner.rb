@@ -1,7 +1,7 @@
 require 'rdiscount'
 require 'nokogiri'
 
-require 'htmlerizer'
+require 'outliner/htmlerizer'
 require 'outliner/document'
 require 'outliner/outline'
 require 'outliner/outlinee'
