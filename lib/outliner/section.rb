@@ -1,6 +1,8 @@
 module Outliner
   class SectionExistsError < RuntimeError; end
   class Section
+    DEFAULT_NUMBER = '1'
+
     attr_reader :heading
     attr_accessor :parent
     
@@ -56,8 +58,10 @@ module Outliner
     end
 
     def numberize
-      (parent? ? "#{parent.numberize}.#{parent.find_depth(self)}" : '1').tap do |n| 
-        heading.number = n
+      if heading?
+        heading.number = parent? ? "#{parent.numberize}.#{parent.find_depth(self)}" : DEFAULT_NUMBER
+      else
+        DEFAULT_NUMBER
       end
     end
      
@@ -66,11 +70,15 @@ module Outliner
     end
 
     def to_html
-      "#{title_html}<ol>#{inner_html}</ol>"
+      "#{title_html if heading?}<ol>#{inner_html}</ol>"
     end
 
     def to_xhtml
       Nokogiri::XML.parse(to_html).to_xhtml
+    end
+
+    def inspect
+      "<Section:#{heading? ? heading.node.name : 'blank!'} #{@sections.map { |s| s.inspect }}>"
     end
 
     private
@@ -82,10 +90,8 @@ module Outliner
 
     def generate_id
       suffix = heading.node.text.strip.gsub(/\s+/, '-').downcase
-      prefix = numberize.gsub('.', '-')
-      "#{prefix}#{'-' unless suffix.empty?}#{suffix}".tap do |i|
-        heading.node['id'] = i
-      end
+      value = [numberize.gsub('.', '-'), suffix].join('-')
+      heading.node['id'] = value
     end
 
     def title_html

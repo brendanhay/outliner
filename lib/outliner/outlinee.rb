@@ -35,7 +35,7 @@ module Outliner
     end
 
     def root?
-      matches? /^BLOCKQUOTE|BODY|DETAILS|FIELDSET|FIGURE|TD$/i
+      matches? /^HTML|BLOCKQUOTE|BODY|DETAILS|FIELDSET|FIGURE|TD$/i
     end
 
     def heading?

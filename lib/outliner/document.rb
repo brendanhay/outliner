@@ -3,6 +3,8 @@ module Outliner
     MARKDOWN = <<MARKDOWN
 # A
 B
+# Q
+Z
 ## C
 D
 ## E 
@@ -82,7 +84,7 @@ MARKDOWN
     def enter_node(outlinee)
       # TODO: Investigate why this breaks the algorithm (without too much handwaving)
       # If the top of the stack is a heading content element - do nothing
-      # return if @stack.any? && heading?(@stack.last)
+      #return if @stack.any? && @stack.last.heading?
       
       # When entering a sectioning content element or a sectioning root element
       if outlinee.content_or_root?
@@ -153,6 +155,7 @@ MARKDOWN
 
       # When exiting a sectioning content element, if the stack is not empty
       if outlinee.content? && @stack.any?
+        puts "exiting root: #{outlinee.node.name}"
         # Pop the top element from the stack, and let the current outlinee be that element
         @outlinee = @stack.pop
         # Let the current section be the last section in the outline of the current outlinee element
@@ -165,6 +168,7 @@ MARKDOWN
 
       # When exiting a sectioning root element, if the stack is not empty
       if outlinee.root? && @stack.any?
+        puts "exiting root: #{outlinee.node.name}"
         # Pop the top element from the stack, and let the current outlinee be that element
         @outlinee = @stack.pop
         # Let the current section be the last section in the outline of the current outlinee element
